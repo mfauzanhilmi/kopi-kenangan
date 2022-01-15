@@ -14,12 +14,34 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version() . 'Kopi Kenangan API';
+    $data = [
+        'version' => $router->app->version(),
+        'description' => 'Kopi Kenangan API',
+        'author' => [
+            [
+                'name' => 'Dwika Cahya Febriana',
+                'nim' => 'D111911026',
+            ],
+            [
+                'name' => 'Muhammad Fauzan Hilmi',
+                'nim' => 'D111911027',
+            ],
+            [
+                'name' => 'Firman Mardiyanto',
+                'nim' => 'D111911034',
+            ]
+        ],];
+
+        return response()->json($data, 200);
 });
 
 $router->group(['prefix' => 'auth'], function () use ($router) {
     $router->post('login', 'AuthController@login');
     $router->post('register', 'AuthController@register');
+    $router->post('confirmation/{token}', 'AuthController@confirmation');
+    $router->post('passwords/forgot', 'AuthController@forgotPassword');
+    $router->post('passwords/confirmation/{forgotToken}', 'AuthController@resetPassword');
+    $router->post('logout', 'AuthController@logout');
 });
 
 $router->group(['middleware' => 'auth'], function () use ($router) {

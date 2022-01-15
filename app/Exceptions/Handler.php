@@ -58,6 +58,8 @@ class Handler extends ExceptionHandler
             return parent::render($request, $exception);
         }
 
+        $message = $exception->getMessage();
+
         $status = Response::HTTP_INTERNAL_SERVER_ERROR;
         if ($exception instanceof HttpResponseException)
             $status = Response::HTTP_INTERNAL_SERVER_ERROR;
@@ -66,10 +68,10 @@ class Handler extends ExceptionHandler
             $exception = new MethodNotAllowedHttpException([], 'HTTP_METHOD_NOT_ALLOWED', $exception);
         } else if ($exception instanceof NotFoundHttpException) {
             $status = Response::HTTP_NOT_FOUND;
-            $exception = new NotFoundHttpException('HTTP_NOT_FOUND', $exception);
+            $exception = new NotFoundHttpException($message != '' ? $message : 'HTTP_NOT_FOUND', $exception);
         } else if ($exception instanceof AuthorizationException) {
             $status = Response::HTTP_FORBIDDEN;
-            $exception = new AuthorizationException('HTTP_FORBIDDEN', $status);
+            $exception = new AuthorizationException($message != '' ? $message : 'HTTP_FORBIDDEN', $status);
         } else if ($exception instanceof ValidationException && $exception->getResponse()) {
             return parent::render($request, $exception);
         } else if ($exception)
