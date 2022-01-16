@@ -48,11 +48,20 @@ $router->group(['prefix'=>'admin'], function () use ($router) {
     $router->post('users', 'BuyerController@store');
 });
 
+$router->get('shops', 'ShopController@index');
+$router->get('shops/{id}', 'ShopController@show');
+
 $router->group(['middleware' => 'auth'], function () use ($router) {
     $router->group(['prefix'=>'admin'], function () use ($router) {
         $router->get('users', 'BuyerController@index');
         $router->get('users/{id}', 'BuyerController@show');
         $router->put('users/{id}', 'BuyerController@update');
         $router->delete('users/{id}', 'BuyerController@destroy');
+
+        $router->get('shops', 'ShopController@index');
+        $router->get('shops/{id}', 'ShopController@show');
+        $router->post('shops', 'ShopController@store');
+        $router->put('shops/{id}', 'ShopController@update');
+        $router->delete('shops/{id}', 'ShopController@destroy');
     });
 });
