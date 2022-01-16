@@ -75,7 +75,7 @@ class Handler extends ExceptionHandler
         } else if ($exception instanceof ValidationException && $exception->getResponse()) {
             return parent::render($request, $exception);
         } else if ($exception)
-            $exception = new HttpException($status, 'HTTP_INTERNAL_SERVER_ERROR');
+            $exception = new HttpException($status, $message != '' ? $message : 'HTTP_INTERNAL_SERVER_ERROR');
 
             return response()->json([
                 'success' => false,

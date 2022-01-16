@@ -44,5 +44,15 @@ $router->group(['prefix' => 'auth'], function () use ($router) {
     $router->post('logout', 'AuthController@logout');
 });
 
+$router->group(['prefix'=>'admin'], function () use ($router) {
+    $router->post('users', 'BuyerController@store');
+});
+
 $router->group(['middleware' => 'auth'], function () use ($router) {
+    $router->group(['prefix'=>'admin'], function () use ($router) {
+        $router->get('users', 'BuyerController@index');
+        $router->get('users/{id}', 'BuyerController@show');
+        $router->put('users/{id}', 'BuyerController@update');
+        $router->delete('users/{id}', 'BuyerController@destroy');
+    });
 });
