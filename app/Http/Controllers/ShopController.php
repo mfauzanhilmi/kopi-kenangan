@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Shop;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
-
-
+use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 
 class ShopController extends Controller
 {
@@ -91,6 +90,87 @@ class ShopController extends Controller
         return response()->json([
             'message' => 'Shop deleted successfully',
             'data' => ['shop' => $shop]
+        ], 200);
+    }
+
+    public function getProducts($id)
+    {
+        $shop = Shop::find($id);
+        if (!$shop) {
+            throw new NotFoundHttpException('Shop not found');
+        }
+        return response()->json([
+            'message' => 'Products retrieved successfully',
+            'data' => ['products' => $shop->products]
+        ], 200);
+    }
+
+    public function getProduct($id, $productId)
+    {
+        $shop = Shop::find($id);
+        if (!$shop) {
+            throw new NotFoundHttpException('Shop not found');
+        }
+        $product = $shop->products->find($productId);
+        if (!$product) {
+            throw new NotFoundHttpException('Product not found');
+        }
+        return response()->json([
+            'message' => 'Product retrieved successfully',
+            'data' => ['product' => $product]
+        ], 200);
+    }
+
+    public function addProduct(Request $request, $id)
+    {
+        $validationRules = [
+            'product_id' => 'required|integer|exists:products,id'
+        ];
+
+        $this->validate($request, $validationRules);
+
+        try {
+        $shop = Shop::find($id);
+        if (!$shop) {
+            throw new NotFoundHttpException('Shop not found');
+        }
+
+        $product = Product::find($request->product_id);
+        if (!$product) {
+            throw new NotFoundHttpException('Product not found');
+        }
+
+        DB::beginTransaction();
+        $shop->products()->create(['product_id' => $product->id]);
+        DB::commit();
+        return response()->json([
+            'message' => 'Product added successfully',
+            'data' => ['product' => $product]
+        ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Product already exists in this shop',
+                'data' => ['product' => $product]
+            ], 400);
+        }
+    }
+
+    public function removeProduct($id, $productId)
+    {
+        $shop = Shop::find($id);
+        if (!$shop) {
+            throw new NotFoundHttpException('Shop not found');
+        }
+        $product = $shop->products->find($productId);
+        if (!$product) {
+            throw new NotFoundHttpException('Product not found');
+        }
+        $product->delete();
+
+        return response()->json([
+            'message' => 'Product removed successfully',
+            'data' => ['product' => $product]
         ], 200);
     }
 }

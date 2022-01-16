@@ -51,6 +51,12 @@ $router->group(['prefix'=>'admin'], function () use ($router) {
 $router->get('shops', 'ShopController@index');
 $router->get('shops/{id}', 'ShopController@show');
 
+$router->get('shops/{id}/products', 'ShopController@getProducts');
+$router->get('shops/{id}/products/{productId}', 'ShopController@getProduct');
+
+$router->get('products', 'ProductController@index');
+$router->get('products/{id}', 'ProductController@show');
+
 $router->group(['middleware' => 'auth'], function () use ($router) {
     $router->group(['prefix'=>'admin'], function () use ($router) {
         $router->get('users', 'BuyerController@index');
@@ -63,5 +69,17 @@ $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->post('shops', 'ShopController@store');
         $router->put('shops/{id}', 'ShopController@update');
         $router->delete('shops/{id}', 'ShopController@destroy');
+        $router->get('shops/{id}/products', 'ShopController@getProducts');
+        $router->post('shops/{id}/products', 'ShopController@addProduct');
+        $router->get('shops/{id}/products/{productId}', 'ShopController@getProduct');
+        $router->delete('shops/{id}/products/{productId}', 'ShopController@removeProduct');
+        
+
+        $router->get('products', 'ProductController@index');
+        $router->get('products/{id}', 'ProductController@show');
+        $router->post('products', 'ProductController@store');
+        $router->put('products/{id}', 'ProductController@update');
+        $router->delete('products/{id}', 'ProductController@destroy');
+
     });
 });
