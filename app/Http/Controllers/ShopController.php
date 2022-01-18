@@ -151,7 +151,7 @@ class ShopController extends Controller
             DB::rollBack();
             return response()->json([
                 'message' => 'Product already exists in this shop',
-                'data' => ['product' => $product]
+                'data' => ['error' => $e->getMessage()]
             ], 400);
         }
     }

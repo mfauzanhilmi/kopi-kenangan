@@ -94,7 +94,15 @@ class ProductController extends Controller
                 app('Cloudder')::delete($product->image->public_id);
             }
 
-            $image = app('Cloudder')::upload($request->image, 'products');
+            $image = app('Cloudder')::upload($request->image, null, array(
+                "folder" => "products",
+                "overwrite" => false,
+                "invalidate" => false,
+                "format" => "jpg",
+                "quality" => "auto",
+                "secure" => false,
+                "resource_type" => "image"
+            ));
 
             $product->name = $request->name;
             $product->price = $request->price;

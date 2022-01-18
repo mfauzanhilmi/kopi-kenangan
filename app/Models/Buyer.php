@@ -12,4 +12,8 @@ class Buyer extends Model
     public function user() {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function vouchers() {
+        return $this->hasMany('App\Models\VoucherBuyer');
+    }
 }

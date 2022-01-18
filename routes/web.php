@@ -58,6 +58,9 @@ $router->get('products', 'ProductController@index');
 $router->get('products/{id}', 'ProductController@show');
 
 $router->group(['middleware' => 'auth'], function () use ($router) {
+
+    $router->get('vouchers', 'VoucherController@getVoucherByBuyerLogin');
+
     $router->group(['prefix'=>'admin'], function () use ($router) {
         $router->get('users', 'BuyerController@index');
         $router->get('users/{id}', 'BuyerController@show');
@@ -80,6 +83,15 @@ $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->post('products', 'ProductController@store');
         $router->put('products/{id}', 'ProductController@update');
         $router->delete('products/{id}', 'ProductController@destroy');
+
+        $router->get('vouchers', 'VoucherController@index');
+        $router->get('vouchers/{id}', 'VoucherController@show');
+        $router->post('vouchers', 'VoucherController@store');
+        $router->put('vouchers/{id}', 'VoucherController@update');
+        $router->delete('vouchers/{id}', 'VoucherController@destroy');
+        $router->post('vouchers/buyers/{buyerId}/{id}', 'VoucherController@addVoucherToBuyer');
+        $router->delete('vouchers/buyers/{buyerId}/{id}', 'VoucherController@removeVoucherFromBuyer');
+        $router->get('vouchers/buyers/{buyerId}', 'VoucherController@getVouchersByBuyer');
 
     });
 });
