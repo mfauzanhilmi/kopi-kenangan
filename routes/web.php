@@ -57,6 +57,10 @@ $router->get('shops/{id}/products/{productId}', 'ShopController@getProduct');
 $router->get('products', 'ProductController@index');
 $router->get('products/{id}', 'ProductController@show');
 
+$router->get('orders', 'OrderController@getOrdersByUserLogin');
+$router->post('orders', 'OrderController@addOrderByUser');
+$router->delete('orders/{id}', 'OrderController@deleteOrderByUser');
+
 $router->group(['middleware' => 'auth'], function () use ($router) {
 
     $router->get('vouchers', 'VoucherController@getVoucherByBuyerLogin');
@@ -93,5 +97,8 @@ $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->delete('vouchers/buyers/{buyerId}/{id}', 'VoucherController@removeVoucherFromBuyer');
         $router->get('vouchers/buyers/{buyerId}', 'VoucherController@getVouchersByBuyer');
 
+        $router->get('orders', 'OrderController@index');
+        $router->get('orders/{id}', 'OrderController@show');
+        $router->get('orders/buyers/{buyerId}', 'OrderController@getOrdersByBuyer');
     });
 });

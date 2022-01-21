@@ -7,9 +7,9 @@ use App\Models\Voucher;
 use App\Models\VoucherBuyer;
 use App\Models\Buyer;
 use Illuminate\Support\Facades\Auth;
-use DB;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\DB;
 
 class VoucherController extends Controller
 {
