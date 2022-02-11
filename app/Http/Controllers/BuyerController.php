@@ -19,6 +19,8 @@ class BuyerController extends Controller
         ], 200);
     }
 
+    // show by id 
+
     public function show($id)
     {
         $buyer = Buyer::find($id);
@@ -31,6 +33,7 @@ class BuyerController extends Controller
         ], 200);
     }
 
+    //add buyer
     public function store(Request $request)
     {
         $validationRules = [
@@ -41,6 +44,7 @@ class BuyerController extends Controller
             'address' => 'required|string|min:10',
             'phone' => 'required|min:8'
         ];
+        
 
         $this->validate($request, $validationRules);
 

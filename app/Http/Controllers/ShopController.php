@@ -19,6 +19,7 @@ class ShopController extends Controller
         ], 200);
     }
 
+    //show shop by id 
     public function show($id)
     {
         $shop = Shop::find($id);
@@ -30,7 +31,7 @@ class ShopController extends Controller
             'data' => ['shop' => $shop]
         ], 200);
     }
-
+    // add
     public function store(Request $request)
     {
         $validationRules = [
